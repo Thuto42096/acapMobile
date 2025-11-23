@@ -1,0 +1,32 @@
+import React from 'react';
+import { StatusBar } from 'expo-status-bar';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { PaperProvider } from 'react-native-paper';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { AuthProvider } from './src/contexts/AuthContext';
+import { AppNavigator } from './src/navigation/AppNavigator';
+import { theme } from './src/lib/theme';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 2,
+      staleTime: 1000 * 60 * 5, // 5 minutes
+    },
+  },
+});
+
+export default function App() {
+  return (
+    <SafeAreaProvider>
+      <QueryClientProvider client={queryClient}>
+        <PaperProvider theme={theme}>
+          <AuthProvider>
+            <AppNavigator />
+            <StatusBar style="auto" />
+          </AuthProvider>
+        </PaperProvider>
+      </QueryClientProvider>
+    </SafeAreaProvider>
+  );
+}
