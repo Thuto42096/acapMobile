@@ -30,8 +30,10 @@ A complete React Native mobile application for A.C.A.P Solutions workers has bee
 
 ### 4. Profile Management ✅
 - **Profile View** - Display worker information and statistics
-- **Contact Information** - Phone and email display
-- **Professional Info** - Experience, hourly rate, rating, bio, skills
+- **Edit Profile** - Update personal and professional information
+- **Contact Information** - Phone and email display/editing
+- **Professional Info** - Experience, hourly rate, rating, bio, skills editing
+- **Service Type Selection** - Change service type with segmented buttons
 - **Verification Status** - Visual badges for verification state
 - **Sign Out** - Secure logout functionality
 
@@ -82,7 +84,7 @@ acap-mobile/
 │   │   ├── booking/
 │   │   │   ├── BookingCard.tsx
 │   │   │   └── BookingStatusBadge.tsx
-│   │   ├── profile/           # (Future: Profile components)
+│   │   ├── profile/           # Profile components
 │   │   └── common/
 │   │       ├── LoadingSpinner.tsx
 │   │       ├── EmptyState.tsx
@@ -98,7 +100,8 @@ acap-mobile/
 │   │   │   ├── BookingsListScreen.tsx
 │   │   │   └── BookingDetailsScreen.tsx
 │   │   ├── profile/
-│   │   │   └── ProfileScreen.tsx
+│   │   │   ├── ProfileScreen.tsx
+│   │   │   └── EditProfileScreen.tsx
 │   │   └── notifications/
 │   │       └── NotificationsScreen.tsx
 │   ├── navigation/
@@ -162,9 +165,9 @@ acap-mobile/
 
 ## 🚀 Next Steps (Optional Enhancements)
 
-### Phase 2 Features (Not Yet Implemented)
-1. **Edit Profile Screen** - Allow workers to update their information
-2. **Document Upload** - Upload ID, certificates, police clearance
+### Phase 2 Features
+1. ✅ **Edit Profile Screen** - Workers can update their personal and professional information
+2. **Document Upload** - Upload ID, certificates, police clearance (Not Yet Implemented)
 3. **Push Notifications** - Requires EAS Build for production
 4. **Supabase Realtime** - Live updates for bookings and notifications
 5. **Chat Feature** - In-app messaging between workers and clients
@@ -199,6 +202,9 @@ Before deploying, test the following:
 - [ ] View notifications
 - [ ] Mark notification as read
 - [ ] View profile information
+- [ ] Edit profile information
+- [ ] Update service type, experience, hourly rate
+- [ ] Update bio and skills
 - [ ] Sign out
 - [ ] Test offline mode (cached data)
 

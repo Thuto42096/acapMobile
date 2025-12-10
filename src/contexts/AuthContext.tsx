@@ -14,6 +14,8 @@ interface AuthContextType {
   signOut: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
   refreshProfile: () => Promise<void>;
+  updateProfile: (updates: Partial<Profile>) => Promise<void>;
+  updateWorkerProfile: (updates: Partial<WorkerProfile>) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -136,6 +138,34 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const updateProfile = async (updates: Partial<Profile>) => {
+    if (!user) throw new Error('No user logged in');
+
+    const { error } = await supabase
+      .from('profiles')
+      .update(updates)
+      .eq('id', user.id);
+
+    if (error) throw error;
+
+    // Refresh profile data
+    await refreshProfile();
+  };
+
+  const updateWorkerProfile = async (updates: Partial<WorkerProfile>) => {
+    if (!user) throw new Error('No user logged in');
+
+    const { error } = await supabase
+      .from('worker_profiles')
+      .update(updates)
+      .eq('id', user.id);
+
+    if (error) throw error;
+
+    // Refresh profile data
+    await refreshProfile();
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -149,6 +179,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         signOut,
         resetPassword,
         refreshProfile,
+        updateProfile,
+        updateWorkerProfile,
       }}
     >
       {children}

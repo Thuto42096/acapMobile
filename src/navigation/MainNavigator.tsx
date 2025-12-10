@@ -6,6 +6,7 @@ import { DashboardScreen } from '../screens/dashboard/DashboardScreen';
 import { BookingsListScreen } from '../screens/bookings/BookingsListScreen';
 import { BookingDetailsScreen } from '../screens/bookings/BookingDetailsScreen';
 import { ProfileScreen } from '../screens/profile/ProfileScreen';
+import { EditProfileScreen } from '../screens/profile/EditProfileScreen';
 import { NotificationsScreen } from '../screens/notifications/NotificationsScreen';
 import { useAuth } from '../contexts/AuthContext';
 import { useUnreadCount } from '../hooks/useNotifications';
@@ -40,6 +41,11 @@ const ProfileNavigator = () => {
         name="ProfileView"
         component={ProfileScreen}
         options={{ title: 'Profile' }}
+      />
+      <ProfileStack.Screen
+        name="EditProfile"
+        component={EditProfileScreen}
+        options={{ title: 'Edit Profile' }}
       />
     </ProfileStack.Navigator>
   );

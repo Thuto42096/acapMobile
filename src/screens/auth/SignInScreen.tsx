@@ -13,6 +13,12 @@ export const SignInScreen = ({ navigation }: any) => {
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
+  // DEV ONLY: Auto-fill test credentials
+  const handleDevLogin = () => {
+    setEmail('test@acap.com');
+    setPassword('Test123!');
+  };
+
   const handleSignIn = async () => {
     setError('');
 
@@ -94,12 +100,22 @@ export const SignInScreen = ({ navigation }: any) => {
             Sign In
           </Button>
 
+          {/* DEV ONLY: Quick test login */}
+          <Button
+            mode="outlined"
+            onPress={handleDevLogin}
+            style={styles.devButton}
+            icon="test-tube"
+          >
+            Fill Test Credentials
+          </Button>
+
           <View style={styles.signUpContainer}>
             <Text style={styles.signUpText}>Don't have an account? </Text>
             <Button
               mode="text"
               onPress={() => navigation.navigate('SignUp')}
-              compact
+              compact={true}
             >
               Sign Up
             </Button>
@@ -158,6 +174,11 @@ const styles = StyleSheet.create({
   signInButton: {
     marginTop: spacing.md,
     paddingVertical: spacing.xs,
+  },
+  devButton: {
+    marginTop: spacing.sm,
+    borderColor: colors.primary,
+    borderStyle: 'dashed',
   },
   signUpContainer: {
     flexDirection: 'row',

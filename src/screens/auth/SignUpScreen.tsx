@@ -139,7 +139,7 @@ export const SignUpScreen = ({ navigation }: any) => {
             <Button
               mode="text"
               onPress={() => navigation.navigate('SignIn')}
-              compact
+              compact={true}
             >
               Sign In
             </Button>
