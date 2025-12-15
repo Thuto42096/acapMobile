@@ -67,11 +67,19 @@ export const DashboardScreen = ({ navigation }: any) => {
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.profileSection}>
-          <Avatar.Text
-            size={60}
-            label={profile?.full_name?.charAt(0) || 'W'}
-            style={styles.avatar}
-          />
+          {profile?.avatar_url ? (
+            <Avatar.Image
+              size={60}
+              source={{ uri: profile.avatar_url }}
+              style={styles.avatar}
+            />
+          ) : (
+            <Avatar.Text
+              size={60}
+              label={profile?.full_name?.charAt(0) || 'W'}
+              style={styles.avatar}
+            />
+          )}
           <View style={styles.profileInfo}>
             <Text style={styles.greeting}>Welcome back,</Text>
             <Text style={styles.name}>{profile?.full_name}</Text>

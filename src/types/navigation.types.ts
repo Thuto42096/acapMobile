@@ -5,6 +5,7 @@ export type AuthStackParamList = {
   SignIn: undefined;
   SignUp: undefined;
   ForgotPassword: undefined;
+  PublicProfiles: undefined;
 };
 
 // Main Tab Navigator
@@ -25,6 +26,7 @@ export type BookingsStackParamList = {
 export type ProfileStackParamList = {
   ProfileView: undefined;
   EditProfile: undefined;
+  DocumentUpload: undefined;
 };
 
 // Root Navigator

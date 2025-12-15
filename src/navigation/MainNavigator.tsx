@@ -7,6 +7,7 @@ import { BookingsListScreen } from '../screens/bookings/BookingsListScreen';
 import { BookingDetailsScreen } from '../screens/bookings/BookingDetailsScreen';
 import { ProfileScreen } from '../screens/profile/ProfileScreen';
 import { EditProfileScreen } from '../screens/profile/EditProfileScreen';
+import { DocumentUploadScreen } from '../screens/profile/DocumentUploadScreen';
 import { NotificationsScreen } from '../screens/notifications/NotificationsScreen';
 import { useAuth } from '../contexts/AuthContext';
 import { useUnreadCount } from '../hooks/useNotifications';
@@ -46,6 +47,11 @@ const ProfileNavigator = () => {
         name="EditProfile"
         component={EditProfileScreen}
         options={{ title: 'Edit Profile' }}
+      />
+      <ProfileStack.Screen
+        name="DocumentUpload"
+        component={DocumentUploadScreen}
+        options={{ title: 'Upload Documents' }}
       />
     </ProfileStack.Navigator>
   );

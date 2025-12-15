@@ -64,7 +64,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         .eq('id', userId)
         .single();
 
-      if (profileError) throw profileError;
+      if (profileError) {
+        // PGRST116 means no rows found - profile doesn't exist yet
+        if (profileError.code === 'PGRST116') {
+          console.warn('Profile not found for user:', userId);
+          setProfile(null);
+          setWorkerProfile(null);
+          return;
+        }
+        throw profileError;
+      }
+
       setProfile(profileData);
 
       // Fetch worker profile if role is worker

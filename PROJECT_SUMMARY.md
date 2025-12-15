@@ -10,6 +10,7 @@ A complete React Native mobile application for A.C.A.P Solutions workers has bee
 - **Sign In Screen** - Email/password authentication
 - **Sign Up Screen** - Worker registration with validation
 - **Forgot Password Screen** - Password reset functionality
+- **Public Profiles Screen** - Browse verified workers before signing in
 - **Session Management** - Persistent sessions with AsyncStorage
 - **Auth Context** - Centralized authentication state management
 
@@ -30,7 +31,9 @@ A complete React Native mobile application for A.C.A.P Solutions workers has bee
 
 ### 4. Profile Management ✅
 - **Profile View** - Display worker information and statistics
+- **Profile Picture** - Upload, change, and remove profile pictures
 - **Edit Profile** - Update personal and professional information
+- **Document Upload** - Upload ID, certificates, police clearance
 - **Contact Information** - Phone and email display/editing
 - **Professional Info** - Experience, hourly rate, rating, bio, skills editing
 - **Service Type Selection** - Change service type with segmented buttons
@@ -50,6 +53,7 @@ A complete React Native mobile application for A.C.A.P Solutions workers has bee
 - **Error Messages** - Graceful error handling with retry
 - **Status Badges** - Color-coded booking status indicators
 - **Booking Cards** - Rich booking information cards
+- **Worker Profile Cards** - Public worker profile display
 - **Theme System** - Consistent colors and typography
 
 ### 7. Navigation ✅
@@ -67,6 +71,9 @@ A complete React Native mobile application for A.C.A.P Solutions workers has bee
   - `useBookingStats` - Calculate statistics
   - `useNotifications` - Fetch notifications
   - `useUpdateBookingStatus` - Update booking status
+  - `useDocuments` - Manage document uploads
+  - `usePublicProfiles` - Fetch public worker profiles
+  - `useProfilePicture` - Upload and manage profile pictures
 
 ### 9. Backend Integration ✅
 - **Supabase Client** - Configured with AsyncStorage
@@ -167,7 +174,7 @@ acap-mobile/
 
 ### Phase 2 Features
 1. ✅ **Edit Profile Screen** - Workers can update their personal and professional information
-2. **Document Upload** - Upload ID, certificates, police clearance (Not Yet Implemented)
+2. ✅ **Document Upload** - Upload ID, certificates, police clearance with verification status tracking
 3. **Push Notifications** - Requires EAS Build for production
 4. **Supabase Realtime** - Live updates for bookings and notifications
 5. **Chat Feature** - In-app messaging between workers and clients

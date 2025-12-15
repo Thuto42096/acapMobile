@@ -100,6 +100,16 @@ export const SignInScreen = ({ navigation }: any) => {
             Sign In
           </Button>
 
+          {/* View Profiles Button */}
+          <Button
+            mode="outlined"
+            onPress={() => navigation.navigate('PublicProfiles')}
+            style={styles.viewProfilesButton}
+            icon="account-search"
+          >
+            View Worker Profiles
+          </Button>
+
           {/* DEV ONLY: Quick test login */}
           <Button
             mode="outlined"
@@ -174,6 +184,10 @@ const styles = StyleSheet.create({
   signInButton: {
     marginTop: spacing.md,
     paddingVertical: spacing.xs,
+  },
+  viewProfilesButton: {
+    marginTop: spacing.sm,
+    borderColor: colors.primary,
   },
   devButton: {
     marginTop: spacing.sm,

@@ -63,11 +63,19 @@ export const ProfileScreen = ({ navigation }: any) => {
       {/* Profile Header */}
       <Card style={styles.headerCard}>
         <Card.Content style={styles.headerContent}>
-          <Avatar.Text
-            size={80}
-            label={profile?.full_name?.charAt(0) || 'W'}
-            style={styles.avatar}
-          />
+          {profile?.avatar_url ? (
+            <Avatar.Image
+              size={80}
+              source={{ uri: profile.avatar_url }}
+              style={styles.avatar}
+            />
+          ) : (
+            <Avatar.Text
+              size={80}
+              label={profile?.full_name?.charAt(0) || 'W'}
+              style={styles.avatar}
+            />
+          )}
           <Text style={styles.name}>{profile?.full_name}</Text>
           <Text style={styles.email}>{profile?.email}</Text>
           {workerProfile && (
@@ -158,6 +166,24 @@ export const ProfileScreen = ({ navigation }: any) => {
           </Card.Content>
         </Card>
       )}
+
+      {/* Documents Section */}
+      <Card style={styles.card}>
+        <Card.Content>
+          <Text style={styles.sectionTitle}>Documents</Text>
+          <Text style={styles.infoText}>
+            Upload your ID, certificates, and police clearance for verification
+          </Text>
+          <Button
+            mode="contained"
+            onPress={() => navigation.navigate('DocumentUpload')}
+            style={styles.documentsButton}
+            icon="file-upload"
+          >
+            Manage Documents
+          </Button>
+        </Card.Content>
+      </Card>
 
       {/* Sign Out Button */}
       <Button
@@ -251,6 +277,14 @@ const styles = StyleSheet.create({
   },
   skillChip: {
     margin: spacing.xs,
+  },
+  infoText: {
+    ...typography.body,
+    color: colors.textSecondary,
+    marginBottom: spacing.md,
+  },
+  documentsButton: {
+    marginTop: spacing.sm,
   },
   signOutButton: {
     margin: spacing.md,

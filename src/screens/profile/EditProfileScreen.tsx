@@ -1,19 +1,25 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView, Alert } from 'react-native';
-import { Text, TextInput, Button, Card, SegmentedButtons } from 'react-native-paper';
+import { View, StyleSheet, ScrollView, Alert, TouchableOpacity } from 'react-native';
+import { Text, TextInput, Button, Card, SegmentedButtons, Avatar, IconButton } from 'react-native-paper';
 import { useAuth } from '../../contexts/AuthContext';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import { colors, spacing, typography } from '../../lib/theme';
 import { validatePhone, validateRequired } from '../../utils/validators';
 import { ServiceType } from '../../types/database.types';
+import { useImagePicker, useUploadProfilePicture, useRemoveProfilePicture } from '../../hooks/useProfilePicture';
 
 export const EditProfileScreen = ({ navigation }: any) => {
   const { profile, workerProfile, updateProfile, updateWorkerProfile } = useAuth();
-  
+
+  // Profile picture hooks
+  const { pickImage, requesting: pickingImage } = useImagePicker();
+  const uploadPicture = useUploadProfilePicture();
+  const removePicture = useRemoveProfilePicture();
+
   // Profile state
   const [fullName, setFullName] = useState(profile?.full_name || '');
   const [phone, setPhone] = useState(profile?.phone || '');
-  
+
   // Worker profile state
   const [serviceType, setServiceType] = useState<ServiceType>(
     workerProfile?.service_type || 'domestic_worker'
@@ -30,7 +36,7 @@ export const EditProfileScreen = ({ navigation }: any) => {
       ? workerProfile.skills.join(', ')
       : ''
   );
-  
+
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -57,6 +63,38 @@ export const EditProfileScreen = ({ navigation }: any) => {
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
+  };
+
+  const handleChangeProfilePicture = async () => {
+    const imageUri = await pickImage();
+    if (imageUri) {
+      uploadPicture.mutate(imageUri, {
+        onSuccess: () => {
+          Alert.alert('Success', 'Profile picture updated successfully');
+        },
+      });
+    }
+  };
+
+  const handleRemoveProfilePicture = () => {
+    Alert.alert(
+      'Remove Profile Picture',
+      'Are you sure you want to remove your profile picture?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Remove',
+          style: 'destructive',
+          onPress: () => {
+            removePicture.mutate(undefined, {
+              onSuccess: () => {
+                Alert.alert('Success', 'Profile picture removed');
+              },
+            });
+          },
+        },
+      ]
+    );
   };
 
   const handleSave = async () => {
@@ -105,6 +143,55 @@ export const EditProfileScreen = ({ navigation }: any) => {
 
   return (
     <ScrollView style={styles.container}>
+      {/* Profile Picture */}
+      <Card style={styles.card}>
+        <Card.Content>
+          <Text style={styles.sectionTitle}>Profile Picture</Text>
+
+          <View style={styles.avatarContainer}>
+            {profile?.avatar_url ? (
+              <Avatar.Image
+                size={100}
+                source={{ uri: profile.avatar_url }}
+                style={styles.avatar}
+              />
+            ) : (
+              <Avatar.Text
+                size={100}
+                label={profile?.full_name?.charAt(0) || 'W'}
+                style={styles.avatar}
+              />
+            )}
+          </View>
+
+          <View style={styles.avatarButtons}>
+            <Button
+              mode="outlined"
+              onPress={handleChangeProfilePicture}
+              style={styles.avatarButton}
+              icon="camera"
+              loading={uploadPicture.isPending || pickingImage}
+              disabled={uploadPicture.isPending || pickingImage}
+            >
+              {profile?.avatar_url ? 'Change' : 'Upload'}
+            </Button>
+
+            {profile?.avatar_url && (
+              <Button
+                mode="outlined"
+                onPress={handleRemoveProfilePicture}
+                style={styles.avatarButton}
+                icon="delete"
+                loading={removePicture.isPending}
+                disabled={removePicture.isPending}
+              >
+                Remove
+              </Button>
+            )}
+          </View>
+        </Card.Content>
+      </Card>
+
       {/* Personal Information */}
       <Card style={styles.card}>
         <Card.Content>
@@ -250,6 +337,21 @@ const styles = StyleSheet.create({
     ...typography.h3,
     color: colors.text,
     marginBottom: spacing.md,
+  },
+  avatarContainer: {
+    alignItems: 'center',
+    marginBottom: spacing.md,
+  },
+  avatar: {
+    backgroundColor: colors.primary,
+  },
+  avatarButtons: {
+    flexDirection: 'row',
+    gap: spacing.sm,
+    justifyContent: 'center',
+  },
+  avatarButton: {
+    flex: 1,
   },
   label: {
     ...typography.body,
