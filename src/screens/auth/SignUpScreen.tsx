@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
-import { Text, TextInput, Button, Snackbar } from 'react-native-paper';
+import { Text, TextInput, Button, Snackbar, SegmentedButtons } from 'react-native-paper';
 import { useAuth } from '../../contexts/AuthContext';
 import { validateEmail, validatePassword, validatePhone } from '../../utils/validators';
 import { colors, spacing, typography } from '../../lib/theme';
+import { UserRole } from '../../types/database.types';
 
 export const SignUpScreen = ({ navigation }: any) => {
   const { signUp } = useAuth();
@@ -12,6 +13,7 @@ export const SignUpScreen = ({ navigation }: any) => {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [role, setRole] = useState<UserRole>('client');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -47,7 +49,7 @@ export const SignUpScreen = ({ navigation }: any) => {
 
     setLoading(true);
     try {
-      await signUp(email, password, fullName, phone);
+      await signUp(email, password, fullName, phone, role);
       // Success - user will be automatically signed in
     } catch (err: any) {
       setError(err.message || 'Failed to create account. Please try again.');
@@ -64,10 +66,29 @@ export const SignUpScreen = ({ navigation }: any) => {
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
           <Text style={styles.title}>Create Account</Text>
-          <Text style={styles.subtitle}>Join as a worker</Text>
+          <Text style={styles.subtitle}>Join A.C.A.P Solutions</Text>
         </View>
 
         <View style={styles.form}>
+          <Text style={styles.sectionLabel}>I am a:</Text>
+          <SegmentedButtons
+            value={role}
+            onValueChange={(value) => setRole(value as UserRole)}
+            buttons={[
+              {
+                value: 'client',
+                label: 'Client',
+                icon: 'account',
+              },
+              {
+                value: 'worker',
+                label: 'Service Provider',
+                icon: 'briefcase',
+              },
+            ]}
+            style={styles.roleSelector}
+          />
+
           <TextInput
             label="Full Name"
             value={fullName}
@@ -187,6 +208,15 @@ const styles = StyleSheet.create({
   },
   form: {
     width: '100%',
+  },
+  sectionLabel: {
+    ...typography.body,
+    fontWeight: '600',
+    color: colors.text,
+    marginBottom: spacing.sm,
+  },
+  roleSelector: {
+    marginBottom: spacing.lg,
   },
   input: {
     marginBottom: spacing.md,

@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { Session, User } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
-import { Profile, WorkerProfile } from '../types/database.types';
+import { Profile, WorkerProfile, UserRole } from '../types/database.types';
 
 interface AuthContextType {
   session: Session | null;
@@ -10,7 +10,7 @@ interface AuthContextType {
   workerProfile: WorkerProfile | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string, fullName: string, phone: string) => Promise<void>;
+  signUp: (email: string, password: string, fullName: string, phone: string, role: UserRole) => Promise<void>;
   signOut: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
   refreshProfile: () => Promise<void>;
@@ -103,7 +103,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (error) throw error;
   };
 
-  const signUp = async (email: string, password: string, fullName: string, phone: string) => {
+  const signUp = async (email: string, password: string, fullName: string, phone: string, role: UserRole = 'worker') => {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -111,7 +111,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         data: {
           full_name: fullName,
           phone,
-          role: 'worker',
+          role,
         },
       },
     });
@@ -125,10 +125,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         email,
         full_name: fullName,
         phone,
-        role: 'worker',
+        role,
       });
 
       if (profileError) throw profileError;
+
+      // Create worker profile only if role is worker
+      if (role === 'worker') {
+        const { error: workerProfileError } = await supabase.from('worker_profiles').insert({
+          id: data.user.id,
+          service_type: 'domestic_worker', // Default, can be updated later
+          experience_years: 0,
+          hourly_rate: 0,
+          availability_status: 'unavailable',
+          verification_status: 'pending',
+          total_reviews: 0,
+        });
+
+        if (workerProfileError) {
+          console.error('Error creating worker profile:', workerProfileError);
+          // Don't throw - profile was created successfully
+        }
+      }
     }
   };
 

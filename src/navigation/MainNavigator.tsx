@@ -1,7 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { MainTabParamList, BookingsStackParamList, ProfileStackParamList } from '../types/navigation.types';
+import { WorkerTabParamList, BookingsStackParamList, ProfileStackParamList } from '../types/navigation.types';
 import { DashboardScreen } from '../screens/dashboard/DashboardScreen';
 import { BookingsListScreen } from '../screens/bookings/BookingsListScreen';
 import { BookingDetailsScreen } from '../screens/bookings/BookingDetailsScreen';
@@ -14,7 +14,7 @@ import { useUnreadCount } from '../hooks/useNotifications';
 import { colors } from '../lib/theme';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const Tab = createBottomTabNavigator<MainTabParamList>();
+const Tab = createBottomTabNavigator<WorkerTabParamList>();
 const BookingsStack = createNativeStackNavigator<BookingsStackParamList>();
 const ProfileStack = createNativeStackNavigator<ProfileStackParamList>();
 
